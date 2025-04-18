@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Sezir Shifrlash Algoritmi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Sezir Shifrlash Algoritmi</h1>
+
+    <label for="text">Matn kiriting:</label>
+    <textarea id="text" rows="4"></textarea>
+
+    <label for="key">Kalit (shift) soni:</label>
+    <input type="number" id="key" min="1" max="25" value="3">
+
+    <button onclick="encrypt()">Shifrlash</button>
+    <button onclick="decrypt()">Deshifrlash</button>
+    <button onclick="bruteForce()">Brute-force</button>
+
+    <h3>Natija:</h3>
+    <pre id="result"></pre>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
