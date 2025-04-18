@@ -2,22 +2,93 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <title>Sezirni Buzish</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Sezir Shifrlash va Buzish</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    textarea, input {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Sezirni Buzuvchi Sayt</h1>
+    <h1>Sezir Shifrlash va Buzish</h1>
 
-    <label for="text">Shifrlangan matn:</label>
-    <textarea id="text" rows="4"></textarea>
+    <h2>1. Shifrlash</h2>
+    <label for="plain">Oddiy matn:</label>
+    <textarea id="plain" rows="3"></textarea>
+    <label for="key">Kalit (1–25):</label>
+    <input type="number" id="key" min="1" max="25" value="3">
+    <button onclick="encrypt()">Shifrlash</button>
+    <h3>Shifrlangan natija:</h3>
+    <pre id="encryptedResult"></pre>
 
+    <hr>
+
+    <h2>2. Shifrlangan matnni buzish (brute-force)</h2>
+    <label for="cipher">Shifrlangan matn:</label>
+    <textarea id="cipher" rows="3"></textarea>
     <button onclick="bruteForce()">Barcha Kalitlar Bilan Deshifrlash</button>
-
-    <h3>Natijalar:</h3>
-    <pre id="result"></pre>
+    <h3>Deshifrlangan natijalar:</h3>
+    <pre id="bruteResult"></pre>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    function caesar(text, key, decrypt=false) {
+      if (decrypt) key = (26 - key) % 26;
+      return text.split('').map(char => {
+        let code = char.charCodeAt(0);
+        if (char >= 'A' && char <= 'Z') {
+          return String.fromCharCode((code - 65 + key) % 26 + 65);
+        } else if (char >= 'a' && char <= 'z') {
+          return String.fromCharCode((code - 97 + key) % 26 + 97);
+        } else {
+          return char;
+        }
+      }).join('');
+    }
+
+    function encrypt() {
+      const text = document.getElementById("plain").value;
+      const key = parseInt(document.getElementById("key").value);
+      const result = caesar(text, key);
+      document.getElementById("encryptedResult").innerText = result;
+    }
+
+    function bruteForce() {
+      const text = document.getElementById("cipher").value;
+      let output = "";
+      for (let key = 1; key < 26; key++) {
+        let decrypted = caesar(text, key, true);
+        output += `Kalit ${key}: ${decrypted}\n`;
+      }
+      document.getElementById("bruteResult").innerText = output;
+    }
+  </script>
 </body>
 </html>
